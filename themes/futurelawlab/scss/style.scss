@@ -1,0 +1,7 @@
+// IMPORTANT
+// due to specific twentytwenty styles enqueue, no parent theme styles are available to import
+// all the styles are to be build in this child theme
+
+@import 'header';
+@import 'variables/all';
+@import 'base/all';
