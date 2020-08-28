@@ -1,0 +1,35 @@
+{
+	"name": "futurelawlab",
+	"version": "1.1.0",
+	"description": "Child of TwentyTwenty",
+	"author": "Saulius Vikerta",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"WordPress",
+		"Theme",
+		"TwentyTwenty",
+		"Child"
+	],
+	"homepage": "",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wordpress/twentytwenty.git"
+	},
+	"devDependencies": {
+		"@wordpress/browserslist-config": "^2.7.0",
+		"autoprefixer": "^9.8.5",
+		"chokidar-cli": "^2.1.0",
+		"node-sass": "^4.14.1",
+		"npm-run-all": "^4.1.5",
+		"postcss-cli": "^7.0.0",
+		"postcss-focus-within": "^3.0.0"
+	},
+	"browserslist": [
+		"extends @wordpress/browserslist-config"
+	],
+	"scripts": {
+		"build:style": "node-sass scss/style.scss style.css --output-style expanded && postcss -r style.css",
+		"build": "run-p \"build:*\"",
+		"watch": "chokidar \"**/*.scss\" -c \"npm run build\" --initial"
+	}
+}
