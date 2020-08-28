@@ -10,12 +10,11 @@ function fll_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'fll_enqueue_styles' );
 
 
-function fll_themeprefix_scripts() { 
-    wp_enqueue_style( 'futurelawlab-fonts', fll_themeprefix_fonts_url() ); 
+function fll_webfonts() {
+    wp_enqueue_style( 
+      'futurelawlab-fonts', 
+      'https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600&display=swap'
+    ); 
 }
 
-function fll_themeprefix_fonts_url() { 
-    return 'https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600&display=swap'; 
-}
-
-add_action( 'wp_enqueue_scripts', 'fll_themeprefix_scripts' ); 
+add_action( 'wp_enqueue_scripts', 'fll_webfonts' ); 
