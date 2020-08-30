@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
-plugins
 uploads
 
 # local env files
@@ -21,3 +20,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Vendor plugins
+plugins/query-monitor
+plugins/svg-support
+plugins/loco-translate
+plugins/post-layouts
