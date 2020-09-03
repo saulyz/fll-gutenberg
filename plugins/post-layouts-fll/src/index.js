@@ -1,4 +1,5 @@
 import { registerBlockType } from '@wordpress/blocks';
+import { withSelect } from '@wordpress/data';
 
 (function (blocks, i18n, element) {
   var el = element.createElement;
@@ -9,20 +10,29 @@ import { registerBlockType } from '@wordpress/blocks';
     icon: 'star-filled',
     category: 'design',
     example: {},
-    edit: function (props) {
-      return el(
-        'p',
-        { className: props.className },
-        'Featured post (from the editor, in green).'
+    edit: withSelect((select) => {
+      return {
+        posts: select('core').getEntityRecords('postType', 'post'),
+      };
+    })(({ posts, className }) => {
+      if (!posts) {
+        return 'Loading...';
+      }
+
+      if (posts && posts.length === 0) {
+        return 'No posts';
+      }
+
+      const post = posts[0];
+
+      return (
+        <div className={className}>
+          <a href={post.link}>
+            {post.title.rendered}
+          </a>    
+        </div>
       );
-    },
-    save: function () {
-      return el(
-        'p',
-        {},
-        'Featured post (from the frontend, in red).'
-      );
-    },
+    })
   });
 
 })(window.wp.blocks, window.wp.i18n, window.wp.element);
