@@ -60,6 +60,12 @@ function post_layouts_fll_register_blocks() {
     'editor_script' => 'post-layouts-fll-scripts',
     'render_callback' => 'featured_post_render_callback'
   ) );
+
+  register_block_type( 'post-layouts-fll/category-post-list', array(
+		'style' => 'post-layouts-fll-style',
+		'editor_style' => 'post-layouts-fll-style-editor',
+    'editor_script' => 'post-layouts-fll-scripts'
+  ) );
   
   if ( function_exists( 'wp_set_script_translations' ) ) {
     /**

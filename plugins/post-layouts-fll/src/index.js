@@ -1,38 +1,9 @@
 import { registerBlockType } from '@wordpress/blocks';
-import { withSelect } from '@wordpress/data';
 
-(function (blocks, i18n, element) {
-  var el = element.createElement;
-  var __ = i18n.__;
+import featuredPost from './blocks/featured-post';
+import categoryPostList from './blocks/category-post-list';
 
-  registerBlockType('post-layouts-fll/featured-post', {
-    title: __( 'Featured post', 'post-layouts-fll'),
-    icon: 'star-filled',
-    category: 'design',
-    example: {},
-    edit: withSelect((select) => {
-      return {
-        posts: select('core').getEntityRecords('postType', 'post'),
-      };
-    })(({ posts, className }) => {
-      if (!posts) {
-        return 'Loading...';
-      }
+// todo - define a FLL block category for block grouping
 
-      if (posts && posts.length === 0) {
-        return 'No posts';
-      }
-
-      const post = posts[0];
-
-      return (
-        <div className={className}>
-          <a href={post.link}>
-            {post.title.rendered}
-          </a>    
-        </div>
-      );
-    })
-  });
-
-})(window.wp.blocks, window.wp.i18n, window.wp.element);
+registerBlockType('post-layouts-fll/featured-post', featuredPost);
+registerBlockType('post-layouts-fll/category-post-list', categoryPostList);
