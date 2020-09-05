@@ -24,7 +24,7 @@ const FeaturedPost = (props) => {
 };
 
 export default withSelect((select, ownProps) => {
-  const { getEntityRecords } = select('core ');
+  const { getEntityRecords } = select('core');
   return {
     posts: getEntityRecords('postType', 'post'),
   }

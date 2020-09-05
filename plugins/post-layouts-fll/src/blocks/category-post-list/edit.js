@@ -5,7 +5,7 @@ import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 const PostList = (props) => {
-  const { postList } = props;
+  const { postList, className } = props;
   const hasPosts = Array.isArray(postList) && postList.length;
   if (!hasPosts) {
     return (
@@ -18,19 +18,19 @@ const PostList = (props) => {
     );
   }
   return (
-    <Fragment>
+    <div className={className}>
       {
         map(postList, (post) => {
           return (
             <div>{post.title.raw}</div>
           );
         })}
-    </Fragment>
+    </div>
   );
 }
 
 export default withSelect((select, ownProps) => {
-  const { getEntityRecords } = select('core ');
+  const { getEntityRecords } = select('core');
   const postQuery = {
     per_page: 10,
     page: 1
