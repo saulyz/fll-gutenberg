@@ -7,8 +7,8 @@
 	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"WordPress",
-    "block",
-    "post-layouts"
+		"block",
+		"post-layouts"
 	],
 	"homepage": "",
 	"repository": "",
@@ -22,5 +22,11 @@
 		"lint:js": "wp-scripts lint-js",
 		"packages-update": "wp-scripts packages-update",
 		"start": "wp-scripts start"
+	},
+	"dependencies": {
+		"@wordpress/components": "^10.1.0",
+		"@wordpress/core-data": "^2.21.0",
+		"@wordpress/data": "^4.23.0",
+		"lodash": "^4.17.20"
 	}
 }
