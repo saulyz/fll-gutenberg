@@ -1,7 +1,6 @@
 import { map } from 'lodash';
 import { withSelect } from '@wordpress/data';
 import { Placeholder, Spinner } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 const PostList = (props) => {

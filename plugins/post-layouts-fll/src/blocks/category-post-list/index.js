@@ -7,12 +7,7 @@ export default {
   icon: 'star-filled',
   category: 'futurelawlab',
   example: {},
-  edit,
-  save() {
-    return (
-      <div>
-        Category post list
-      </div>
-    );
-  }
+  edit
+
+  // server-side render on save using dynamic render callback
 }

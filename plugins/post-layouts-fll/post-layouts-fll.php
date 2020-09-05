@@ -58,13 +58,13 @@ function post_layouts_fll_register_blocks() {
 		'style' => 'post-layouts-fll-style',
 		'editor_style' => 'post-layouts-fll-style-editor',
     'editor_script' => 'post-layouts-fll-scripts',
-    'render_callback' => 'featured_post_render_callback'
   ) );
 
   register_block_type( 'post-layouts-fll/category-post-list', array(
 		'style' => 'post-layouts-fll-style',
 		'editor_style' => 'post-layouts-fll-style-editor',
-    'editor_script' => 'post-layouts-fll-scripts'
+    'editor_script' => 'post-layouts-fll-scripts',
+    'render_callback' => 'category_post_list_render_callback',
   ) );
   
   if ( function_exists( 'wp_set_script_translations' ) ) {
@@ -78,24 +78,29 @@ function post_layouts_fll_register_blocks() {
  
 }
 
-function featured_post_render_callback( $block_attributes, $content ) {
+function category_post_list_render_callback( $block_attributes, $content ) {
+  $limit = 10;
+  
   $recent_posts = wp_get_recent_posts( array(
-      'numberposts' => 1,
+      'numberposts' => $limit,
       'post_status' => 'publish',
   ) );
   if ( count( $recent_posts ) === 0 ) {
       return 'No posts';
   }
-  $post = $recent_posts[ 0 ];
-  $post_id = $post['ID'];
   
-  $output  = '<div class="wp-block-post-layouts-fll-featured-post">';
-  $output .= sprintf(
-    '<a href="%1$s">%2$s</a>',
-    esc_url( get_permalink( $post_id ) ),
-    esc_html( get_the_title( $post_id ) )
-  );
-  $output .= '</div>';
+  $output  = '<div class="wp-block-post-layouts-fll-featured-post">' . PHP_EOL;
+  foreach ($recent_posts as $post) {
+    $post_id = $post['ID'];
+    $output .= '<div class="post">' . PHP_EOL;
+    $output .= sprintf(
+      '<a href="%1$s">%2$s</a>',
+      esc_url( get_permalink( $post_id ) ),
+      esc_html( get_the_title( $post_id ) )
+    );
+    $output .= '</div>' . PHP_EOL;
+  }
+  $output .= '</div>' . PHP_EOL;
   
   return $output;
 }
