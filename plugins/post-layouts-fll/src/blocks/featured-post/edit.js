@@ -1,34 +1,40 @@
 import { map } from 'lodash';
+import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { RichText, SelectControl } from '@wordpress/components';
+import { Spinner, SelectControl } from '@wordpress/components';
+import { RichText } from '@wordpress/block-editor';
 
 const FeaturedPost = (props) => {
-  const { attributes: { blockLabel, selectedPostId }, setAttributes, posts, className } = props;
-
-  console.log('FeaturedPost: props', props, blockLabel, selectedPostId);
+  const { attributes, setAttributes, posts, className } = props;
 
   if (!posts) {
-    return 'Loading...';
+    return <p className={className}>
+      <Spinner />
+      {__('Loading Posts')}
+    </p>;
   }
-
-  if (posts && posts.length === 0) {
-    return 'No posts';
+  if (0 === posts.length) {
+    return <p>{__('No Posts')}</p>;
   }
-
-  console.log('FeaturedPost: posts', posts);
 
   const optionsList = map(posts, (post) => {
     return { label: post.title.raw, value: post.id };
   });
-  optionsList.unshift({ label: 'select a post', value: 0 });
+  optionsList.unshift({ label: '- select a post -', value: 0 });
 
   return (
     <div className={className}>
+      <RichText
+        tagName="h2"
+        value={attributes.content}
+        onChange={content => setAttributes({ content })}
+        placeholder={__('Title?')}
+      />
+      <p>Post to showcase</p>
       <SelectControl
-        label='Post'
-        value={selectedPostId}
+        value={attributes.postId}
         options={optionsList}
-        onChange={(val) => props.setAttributes({ selectedPostId: val })}
+        onChange={postId => props.setAttributes({ postId })}
       />
     </div>
   );

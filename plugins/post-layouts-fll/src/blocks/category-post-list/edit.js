@@ -1,29 +1,40 @@
 import { map } from 'lodash';
-import { withSelect } from '@wordpress/data';
-import { Placeholder, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { withSelect } from '@wordpress/data';
+import { Spinner } from '@wordpress/components';
+import { RichText } from '@wordpress/block-editor';
 
 const PostList = (props) => {
-  const { postList, className } = props;
-  const hasPosts = Array.isArray(postList) && postList.length;
-  if (!hasPosts) {
-    return (
-      <Placeholder
-        icon="excerpt-view"
-        label={__('Post Block', '')}
-      >
-        {!Array.isArray(postList) ? <Spinner /> : __('No posts found.', '')}
-      </Placeholder>
-    );
+  const { posts, className, attributes, setAttributes } = props;
+  
+  if (!posts) {
+    return <p className={className}>
+      <Spinner />
+      {__('Loading Posts')}
+    </p>;
+  }
+  if (0 === posts.length) {
+    return <p>{__('No Posts')}</p>;
   }
   return (
     <div className={className}>
-      {
-        map(postList, (post) => {
+      <RichText
+        tagName="h2"
+        value={attributes.content}
+        onChange={content => setAttributes({ content })}
+        placeholder={__('Title?')}
+      />
+      <ul>
+        {posts.map(post => {
           return (
-            <div>{post.title.raw}</div>
+            <li>
+              <a href={post.link}>
+                {post.title.rendered}
+              </a>
+            </li>
           );
         })}
+      </ul>
     </div>
   );
 }
@@ -35,6 +46,6 @@ export default withSelect((select, ownProps) => {
     page: 1
   }
   return {
-    postList: getEntityRecords('postType', 'post', postQuery),
+    posts: getEntityRecords('postType', 'post', postQuery),
   }
 })(PostList)

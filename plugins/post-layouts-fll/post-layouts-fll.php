@@ -55,6 +55,17 @@ function post_layouts_fll_register_blocks() {
 	);
 
 	register_block_type( 'post-layouts-fll/featured-post', array(
+    'attributes' => array(
+      'content' => array(
+        'type' => 'string',
+      ),
+      'postId' => array(
+        'type' => 'number',
+      ),
+      'className' => array(
+        'type' => 'string',
+      ),
+    ),
 		'style' => 'post-layouts-fll-style',
 		'editor_style' => 'post-layouts-fll-style-editor',
     'editor_script' => 'post-layouts-fll-scripts',
@@ -62,6 +73,14 @@ function post_layouts_fll_register_blocks() {
   ) );
 
   register_block_type( 'post-layouts-fll/category-post-list', array(
+    'attributes' => array(
+      'content' => array(
+        'type' => 'string',
+      ),
+      'className' => array(
+        'type' => 'string',
+      ),
+    ),
 		'style' => 'post-layouts-fll-style',
 		'editor_style' => 'post-layouts-fll-style-editor',
     'editor_script' => 'post-layouts-fll-scripts',
@@ -79,48 +98,95 @@ function post_layouts_fll_register_blocks() {
  
 }
 
-function category_post_list_render_callback( $block_attributes, $content ) {
+function category_post_list_render_callback( $attributes ) {
   $limit = 10;
   
   $recent_posts = wp_get_recent_posts( array(
-      'numberposts' => $limit,
-      'post_status' => 'publish',
+    'numberposts' => $limit,
+    'post_status' => 'publish',
   ) );
   if ( count( $recent_posts ) === 0 ) {
       return 'No posts';
   }
-  
-  $output  = '<div class="wp-block-post-layouts-fll-category-post-list">' . PHP_EOL;
-  foreach ($recent_posts as $post) {
+
+  $block_title = ( $attributes['content'] ) ? sprintf( '<h2>%1$s</h2>', $attributes['content'] ) : '';
+
+  $list_item_markup = '';
+
+  foreach ( $recent_posts as $post ) {
     $post_id = $post['ID'];
-    $output .= '<div class="post">' . PHP_EOL;
-    $output .= sprintf(
-      '<a href="%1$s">%2$s</a>',
+
+    $title = get_the_title( $post_id );
+
+    $list_item_markup .= sprintf(
+      '<li><a href="%1$s">%2$s</a></li>',
       esc_url( get_permalink( $post_id ) ),
-      esc_html( get_the_title( $post_id ) )
+      esc_html( $title )
     );
-    $output .= '</div>' . PHP_EOL;
   }
-  $output .= '</div>' . PHP_EOL;
   
-  return $output;
+  $class = 'wp-block-post-layouts-fll-category-post-list';
+  if ( isset( $attributes['className'] ) ) {
+    $class .= ' ' . $attributes['className'];
+  }
+
+  $block_content = sprintf(
+    '<div class="%1$s">%2$s<ul>%3$s</ul></div>',
+    esc_attr( $class ),
+    $block_title,
+    $list_item_markup
+  );
+
+  return $block_content;
 }
 
-function featured_post_render_callback( $block_attributes, $content ) {
+function featured_post_render_callback( $attributes ) {
+  $post_id = ( $attributes['postId'] ) ? $attributes['postId'] : null;
 
-  list( $block_label, $selected_post_id ) = $block_attributes;
-  $output = '<div class="wp-block-post-layouts-fll-featured-post">' . PHP_EOL;
+  if ( ! empty( $post_id ) ) {
 
-  $args = [
-    'p' => $selected_post_id,
-  ];
-  
-  $the_query = new WP_Query( $args );
-  if ( $the_query->have_posts() ) {
-    $the_query->the_post();
-    $output .= 'id: ' . get_the_id() . ' ' . get_the_title() . PHP_EOL;
+    $recent_posts = get_posts( array(
+      'numberposts' => 1,
+      'post_status' => 'publish',
+      'include' => $post_id,
+      ) );
+
+  } else {
+    $recent_posts = array();
   }
-  $output .= '</div>' . PHP_EOL;
-  wp_reset_postdata();
-  return $output;
+  if ( count( $recent_posts ) === 0 ) {
+    return 'No posts';
+  }
+
+  $block_title = ( $attributes['content'] ) ? 
+    sprintf( '<h2 class="featured-label">%1$s</h2>', $attributes['content'] ) 
+    : 
+    '';
+
+  $class = 'wp-block-post-layouts-fll-featured-post';
+  if ( isset( $attributes['className'] ) ) {
+    $class .= ' ' . $attributes['className'];
+  }
+
+  $title = get_the_title( $post_id );
+  $link = sprintf( '<a href="%1$s">%2$s</a>',
+    esc_url( get_permalink( $post_id ) ),
+    esc_html( $title )
+  );
+  $post_thumbnail_url = get_the_post_thumbnail_url( $post_id );
+  $thumbnail = ( ! empty( $post_thumbnail_url ) ) ? 
+    sprintf( '<img class="post-thumbnail" src="%1$s"',
+      esc_url( get_the_post_thumbnail_url( $post_id ) )
+    )
+    :
+    '';
+
+  $post_markup = '<div class="post">' . $thumbnail . $link . '</div>';
+
+  $block_content = sprintf( '<div class="%1$s">%2$s</div>', 
+    esc_attr( $class ),
+    $block_title . $post_markup
+  );
+
+  return $block_content;
 }
