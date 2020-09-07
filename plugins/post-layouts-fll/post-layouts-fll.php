@@ -58,6 +58,7 @@ function post_layouts_fll_register_blocks() {
 		'style' => 'post-layouts-fll-style',
 		'editor_style' => 'post-layouts-fll-style-editor',
     'editor_script' => 'post-layouts-fll-scripts',
+    'render_callback' => 'featured_post_render_callback',
   ) );
 
   register_block_type( 'post-layouts-fll/category-post-list', array(
@@ -89,7 +90,7 @@ function category_post_list_render_callback( $block_attributes, $content ) {
       return 'No posts';
   }
   
-  $output  = '<div class="wp-block-post-layouts-fll-featured-post">' . PHP_EOL;
+  $output  = '<div class="wp-block-post-layouts-fll-category-post-list">' . PHP_EOL;
   foreach ($recent_posts as $post) {
     $post_id = $post['ID'];
     $output .= '<div class="post">' . PHP_EOL;
@@ -102,5 +103,24 @@ function category_post_list_render_callback( $block_attributes, $content ) {
   }
   $output .= '</div>' . PHP_EOL;
   
+  return $output;
+}
+
+function featured_post_render_callback( $block_attributes, $content ) {
+
+  list( $block_label, $selected_post_id ) = $block_attributes;
+  $output = '<div class="wp-block-post-layouts-fll-featured-post">' . PHP_EOL;
+
+  $args = [
+    'p' => $selected_post_id,
+  ];
+  
+  $the_query = new WP_Query( $args );
+  if ( $the_query->have_posts() ) {
+    $the_query->the_post();
+    $output .= 'id: ' . get_the_id() . ' ' . get_the_title() . PHP_EOL;
+  }
+  $output .= '</div>' . PHP_EOL;
+  wp_reset_postdata();
   return $output;
 }

@@ -1,7 +1,11 @@
+import { map } from 'lodash';
 import { withSelect } from '@wordpress/data';
+import { RichText, SelectControl } from '@wordpress/components';
 
 const FeaturedPost = (props) => {
-  const { posts, className } = props;
+  const { attributes: { blockLabel, selectedPostId }, setAttributes, posts, className } = props;
+
+  console.log('FeaturedPost: props', props, blockLabel, selectedPostId);
 
   if (!posts) {
     return 'Loading...';
@@ -11,13 +15,21 @@ const FeaturedPost = (props) => {
     return 'No posts';
   }
 
-  const post = posts[0];
+  console.log('FeaturedPost: posts', posts);
+
+  const optionsList = map(posts, (post) => {
+    return { label: post.title.raw, value: post.id };
+  });
+  optionsList.unshift({ label: 'select a post', value: 0 });
 
   return (
     <div className={className}>
-      <a href={post.link}>
-        {post.title.rendered}
-      </a>
+      <SelectControl
+        label='Post'
+        value={selectedPostId}
+        options={optionsList}
+        onChange={(val) => props.setAttributes({ selectedPostId: val })}
+      />
     </div>
   );
     
@@ -26,6 +38,6 @@ const FeaturedPost = (props) => {
 export default withSelect((select, ownProps) => {
   const { getEntityRecords } = select('core');
   return {
-    posts: getEntityRecords('postType', 'post'),
+    posts: getEntityRecords('postType', 'post', { per_page: -1 }),
   }
 })(FeaturedPost)
