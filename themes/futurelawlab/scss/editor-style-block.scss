@@ -1,0 +1,11 @@
+%block-base-font {
+  font-family: "Rubik", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.editor-styles-wrapper * {
+  @extend %block-base-font;
+}
+
+.editor-styles-wrapper p {
+  @extend %block-base-font; // for override
+}

@@ -29,6 +29,7 @@
 	],
 	"scripts": {
 		"build:style": "node-sass scss/style.scss style.css --output-style expanded && postcss -r style.css",
+		"build:editor-blocks-style": "node-sass scss/editor-style-block.scss editor-style-block.css --output-style expanded && postcss -r editor-style-block.css",
 		"build": "run-p \"build:*\"",
 		"watch": "chokidar \"**/*.scss\" -c \"npm run build\" --initial"
 	}
