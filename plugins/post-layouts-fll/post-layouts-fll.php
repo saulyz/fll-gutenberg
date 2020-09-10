@@ -13,6 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
+define( 'COMPONENTS', plugin_dir_path( __FILE__ ) . 'src/components' );
 
 add_action( 'init', 'post_layouts_fll_load_text_domain' );
 
@@ -98,6 +99,20 @@ function post_layouts_fll_register_blocks() {
  
 }
 
+
+// Components
+$file = COMPONENTS . '/post-title.php';
+if ( file_exists( $file ) ) {
+  error_log('file ' . $file . ' EXISTS');
+} else {
+  error_log('file ' . $file . ' DO NOT EXIST!');
+}
+
+
+
+
+// Dynamic callbacks
+
 function category_post_list_render_callback( $attributes ) {
   $limit = 10;
   
@@ -140,8 +155,11 @@ function category_post_list_render_callback( $attributes ) {
   return $block_content;
 }
 
+
 function featured_post_render_callback( $attributes ) {
-  $post_id = ( $attributes['postId'] ) ? $attributes['postId'] : null;
+  //error_log('featured_post_render_callback:: ' . var_export(func_get_args(), true));
+
+  $post_id = $attributes['postId'] ?? null;
 
   if ( ! empty( $post_id ) ) {
 
@@ -158,35 +176,57 @@ function featured_post_render_callback( $attributes ) {
     return 'No posts';
   }
 
-  $block_title = ( $attributes['content'] ) ? 
-    sprintf( '<h2 class="featured-label">%1$s</h2>', $attributes['content'] ) 
-    : 
-    '';
-
   $class = 'wp-block-post-layouts-fll-featured-post';
   if ( isset( $attributes['className'] ) ) {
     $class .= ' ' . $attributes['className'];
   }
 
-  $title = get_the_title( $post_id );
-  $link = sprintf( '<a href="%1$s">%2$s</a>',
-    esc_url( get_permalink( $post_id ) ),
-    esc_html( $title )
-  );
-  $post_thumbnail_url = get_the_post_thumbnail_url( $post_id );
-  $thumbnail = ( ! empty( $post_thumbnail_url ) ) ? 
-    sprintf( '<img class="post-thumbnail" src="%1$s"',
-      esc_url( get_the_post_thumbnail_url( $post_id ) )
-    )
-    :
-    '';
-
-  $post_markup = '<div class="post">' . $thumbnail . $link . '</div>';
+  $block_title = get_plugin_component( 'block-title', ['title' => $attributes['content'] ] );
+  $post = get_post_render( $post_id );
 
   $block_content = sprintf( '<div class="%1$s">%2$s</div>', 
     esc_attr( $class ),
-    $block_title . $post_markup
+    $block_title . $post
   );
 
   return $block_content;
+}
+
+
+function get_plugin_component( $name, $args ) {
+  // $args is applied in component scope as component params array
+  return require( COMPONENTS . "/$name.php" );
+}
+
+
+function get_post_render( $post_id ) {
+  $post_title = get_the_title( $post_id );
+  $post_link = get_plugin_component( 'link', [
+    'href' => get_permalink( $post_id ), 
+    'content' => $post_title]
+  );
+
+  $post_title_with_link = get_plugin_component( 'post-title', ['title' => $post_link ] );
+
+  $post_thumb_url = get_the_post_thumbnail_url( $post_id );
+  $post_thumbnail = get_plugin_component( 'post-thumbnail', ['src' => $post_thumb_url] );
+
+  $post_meta = get_plugin_component( 'post-meta-set', [
+    'post_id' => $post_id,
+    'reading_time' => get_post_reading_time( $post_id )
+  ] );
+
+  return '<div class="post">' 
+    . $post_thumbnail 
+    . $post_meta 
+    . $post_title_with_link 
+    . '</div>';
+}
+
+
+function get_post_reading_time( $post_id ) {
+  $content = get_post_field( 'post_content', $post_id );
+  $word_count = str_word_count( strip_tags( $content ) );
+  $reading_time = ceil( $word_count / 200 );
+  return $reading_time . ' min';
 }
