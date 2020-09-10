@@ -130,14 +130,7 @@ function category_post_list_render_callback( $attributes ) {
 
   foreach ( $recent_posts as $post ) {
     $post_id = $post['ID'];
-
-    $title = get_the_title( $post_id );
-
-    $list_item_markup .= sprintf(
-      '<li><a href="%1$s">%2$s</a></li>',
-      esc_url( get_permalink( $post_id ) ),
-      esc_html( $title )
-    );
+    $list_item_markup .= $post = get_post_render( $post_id );
   }
   
   $class = 'wp-block-post-layouts-fll-category-post-list';
