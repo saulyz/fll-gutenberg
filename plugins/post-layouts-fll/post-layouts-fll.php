@@ -187,25 +187,35 @@ function get_plugin_component( $name, $args ) {
 
 function get_post_render( $post_id ) {
   $post_title = get_the_title( $post_id );
-  $post_link = get_plugin_component( 'link', [
-    'href' => get_permalink( $post_id ), 
-    'content' => $post_title]
+  $post_link = get_plugin_component( 'link', 
+    [
+      'href' => get_permalink( $post_id ), 
+      'content' => $post_title
+    ]
+  );
+  $post_title_with_link = get_plugin_component( 'post-title', ['title' => $post_link ] );
+
+  $post_meta = get_plugin_component( 'post-meta-set', 
+    [
+      'post_id' => $post_id,
+      'reading_time' => get_post_reading_time( $post_id )
+    ]
   );
 
-  $post_title_with_link = get_plugin_component( 'post-title', ['title' => $post_link ] );
+  $group_body = get_plugin_component( 'post-body-wrapper', 
+    ['content' => $post_meta . $post_title_with_link  ]
+  );
 
   $post_thumb_url = get_the_post_thumbnail_url( $post_id );
   $post_thumbnail = get_plugin_component( 'post-thumbnail', ['src' => $post_thumb_url] );
 
-  $post_meta = get_plugin_component( 'post-meta-set', [
-    'post_id' => $post_id,
-    'reading_time' => get_post_reading_time( $post_id )
-  ] );
+  $group_thumbnail = get_plugin_component( 'post-thumbnail-wrapper', 
+    ['content' => $post_thumbnail ]
+  );
 
   return '<div class="post">' 
-    . $post_thumbnail 
-    . $post_meta 
-    . $post_title_with_link 
+    . $group_thumbnail 
+    . $group_body 
     . '</div>';
 }
 
