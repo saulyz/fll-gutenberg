@@ -1,0 +1,18 @@
+.fll-post-details {
+  display: flex;
+  align-items: center; }
+  .fll-post-details .fll-author-thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+    color: white;
+    background: blue;
+    border-radius: 50%; }
+  .fll-post-details .fll-author-thumbnail + .fll-post-meta-wrapper {
+    margin-left: 10px; }
+
+
+/*# sourceMappingURL=style-index.css.map*/
