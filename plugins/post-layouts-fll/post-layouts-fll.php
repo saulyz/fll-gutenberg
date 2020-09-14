@@ -31,28 +31,38 @@ function post_layouts_fll_register_blocks() {
 		return;
 	}
  
-  // automatically load dependencies and version
-  $asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
+  $dir = dirname( __FILE__ );
 
-  wp_register_script(
-      'post-layouts-fll-scripts',
-      plugins_url( 'build/index.js', __FILE__ ),
-      $asset_file['dependencies'],
-      $asset_file['version']
-  );
+	$script_asset_path = "$dir/build/index.asset.php";
+	if ( ! file_exists( $script_asset_path ) ) {
+		throw new Error(
+			'You need to run `npm start` or `npm run build` for the "post-layouts-fll" blocks first.'
+		);
+	}
+	$index_js     = 'build/index.js';
+	$script_asset = require( $script_asset_path );
+	wp_register_script(
+		'post-layouts-fll-scripts',
+		plugins_url( $index_js, __FILE__ ),
+		$script_asset['dependencies'],
+		$script_asset['version']
+	);
+	wp_set_script_translations( 'post-layouts-fll-scripts', 'post-layouts-fll' );
 
-  wp_register_style(
+	$editor_css = 'build/index.css';
+	wp_register_style(
 		'post-layouts-fll-style-editor',
-		plugins_url( 'editor.css', __FILE__ ),
-		array( 'wp-edit-blocks' ),
-		filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' )
+		plugins_url( $editor_css, __FILE__ ),
+		array(),
+		filemtime( "$dir/$editor_css" )
 	);
 
+	$style_css = 'build/style-index.css';
 	wp_register_style(
 		'post-layouts-fll-style',
-		plugins_url( 'style.css', __FILE__ ),
-		array( ),
-		filemtime( plugin_dir_path( __FILE__ ) . 'style.css' )
+		plugins_url( $style_css, __FILE__ ),
+		array(),
+		filemtime( "$dir/$style_css" )
 	);
 
 	register_block_type( 'post-layouts-fll/featured-post', array(
@@ -87,26 +97,9 @@ function post_layouts_fll_register_blocks() {
     'editor_script' => 'post-layouts-fll-scripts',
     'render_callback' => 'category_post_list_render_callback',
   ) );
-  
-  if ( function_exists( 'wp_set_script_translations' ) ) {
-    /**
-     * May be extended to wp_set_script_translations( 'my-handle', 'my-domain',
-     * plugin_dir_path( MY_PLUGIN ) . 'languages' ) ). For details see
-     * https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
-     */
-    wp_set_script_translations( 'post-layouts-fll-scripts', 'post-layouts-fll' );
-  }
  
 }
 
-
-// Components
-$file = COMPONENTS . '/post-title.php';
-if ( file_exists( $file ) ) {
-  error_log('file ' . $file . ' EXISTS');
-} else {
-  error_log('file ' . $file . ' DO NOT EXIST!');
-}
 
 
 
@@ -124,14 +117,15 @@ function category_post_list_render_callback( $attributes ) {
       return 'No posts';
   }
 
-  $block_title = ( $attributes['content'] ) ? sprintf( '<h2>%1$s</h2>', $attributes['content'] ) : '';
+  $block_title = get_plugin_component( 'block-title', ['title' => $attributes['content'] ] );
 
-  $list_item_markup = '';
+  $post_list_items = '';
 
   foreach ( $recent_posts as $post ) {
     $post_id = $post['ID'];
-    $list_item_markup .= $post = get_post_render( $post_id );
+    $post_list_items .= $post = get_post_render( $post_id );
   }
+  $post_list = '<div class="post-list">' . $post_list_items . '</div>';
   
   $class = 'wp-block-post-layouts-fll-category-post-list';
   if ( isset( $attributes['className'] ) ) {
@@ -139,10 +133,9 @@ function category_post_list_render_callback( $attributes ) {
   }
 
   $block_content = sprintf(
-    '<div class="%1$s">%2$s<ul>%3$s</ul></div>',
+    '<div class="%1$s">%2$s</div>',
     esc_attr( $class ),
-    $block_title,
-    $list_item_markup
+    $block_title . $post_list
   );
 
   return $block_content;

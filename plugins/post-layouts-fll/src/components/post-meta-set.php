@@ -2,8 +2,8 @@
 // NOTE: this code is meant to run in function scope
 
 $defaults = [
-  'wrapper-class' => 'post-details',
-  'class' => 'post-meta',
+  'wrapper-class' => 'fll-post-details',
+  'class' => 'fll-post-meta',
 ];
 
 // $args is protected from global scope overrides
@@ -15,7 +15,7 @@ if ( empty( $args['post_id'] ) ) {
 
 $author_id = get_post_field( 'post_author', $args['post_id'] );
 $display_name = get_the_author_meta( 'display_name' , $author_id );
-$icon = '<div class="author-thumbnail">' . strtoupper( substr( $display_name, 0, 1 ) ). '</div>';
+$icon = '<div class="fll-author-thumbnail">' . strtoupper( substr( $display_name, 0, 1 ) ). '</div>';
 $date_published = get_the_date( 'Y M d' );
 $reading_time = ( isset( $args['reading_time'] ) ) ? $args['reading_time'] : '';
 

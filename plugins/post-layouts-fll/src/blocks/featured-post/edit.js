@@ -4,8 +4,19 @@ import { withSelect } from '@wordpress/data';
 import { Spinner, SelectControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * Those files can contain any CSS code that gets applied to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+import './editor.scss';
+
+
 const FeaturedPost = (props) => {
   const { attributes, setAttributes, posts, className } = props;
+
+  console.log('FeaturedPost: props', props);
 
   if (!posts) {
     return <p className={className}>
@@ -16,6 +27,8 @@ const FeaturedPost = (props) => {
   if (0 === posts.length) {
     return <p>{__('No Posts')}</p>;
   }
+
+  //console.log('FeaturedPost: posts', posts);
 
   const optionsList = map(posts, (post) => {
     return { label: post.title.raw, value: post.id };
