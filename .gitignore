@@ -26,3 +26,5 @@ plugins/query-monitor
 plugins/svg-support
 plugins/loco-translate
 plugins/post-layouts
+plugins/starter-block
+plugins/jetpack
