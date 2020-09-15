@@ -1,7 +1,10 @@
-.fll-post-details {
+.post {
+  background: white; }
+
+.post-details {
   display: flex;
   align-items: center; }
-  .fll-post-details .fll-author-thumbnail {
+  .post-details .author-thumbnail {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,8 +14,75 @@
     color: white;
     background: blue;
     border-radius: 50%; }
-  .fll-post-details .fll-author-thumbnail + .fll-post-meta-wrapper {
+  .post-details .author-thumbnail + .post-meta-wrapper {
     margin-left: 10px; }
+  .post-details .post-meta-wrapper {
+    margin: 0;
+    max-width: none;
+    width: auto; }
+  .post-details .post-meta {
+    margin: 0; }
+
+.post-thumbnail-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  overflow: hidden; }
+  @media (max-width: 360px) {
+    .post-thumbnail-wrapper {
+      height: 200px; } }
+  @media (min-width: 360px) and (max-width: 576px) {
+    .post-thumbnail-wrapper {
+      height: 250px; } }
+  @media (max-width: 768px) {
+    .post-thumbnail-wrapper .post-thumbnail {
+      max-width: 120%;
+      width: 120%;
+      height: auto; } }
+  @media (min-width: 768px) {
+    .post-thumbnail-wrapper .post-thumbnail {
+      height: 100%;
+      min-height: 100%;
+      max-width: none;
+      width: auto; } }
+
+.post-body-wrapper {
+  padding: 3rem; }
+
+.entry-content h2.post-title, .entry-content h3.post-title, .entry-content h4.post-title, .entry-content h5.post-title, .entry-content h6.post-title {
+  margin: 2rem 0; }
+
+@media (min-width: 768px) {
+  .wp-block-post-layouts-fll-featured-post .post-thumbnail-wrapper {
+    height: 400px; } }
+
+@media (min-width: 768px) {
+  .wp-block-post-layouts-fll-featured-post .post-thumbnail-wrapper .post-thumbnail {
+    width: 100%;
+    min-height: 100%;
+    height: auto; } }
+
+.wp-block-post-layouts-fll-category-post-list .post {
+  display: flex; }
+  @media (max-width: 768px) {
+    .wp-block-post-layouts-fll-category-post-list .post {
+      flex-wrap: wrap; } }
+
+.wp-block-post-layouts-fll-category-post-list .post + .post {
+  margin-top: 3rem; }
+
+@media (max-width: 768px) {
+  .wp-block-post-layouts-fll-category-post-list .post-thumbnail-wrapper,
+  .wp-block-post-layouts-fll-category-post-list .post-body-wrapper {
+    width: 100%; } }
+
+@media (min-width: 768px) {
+  .wp-block-post-layouts-fll-category-post-list .post-thumbnail-wrapper,
+  .wp-block-post-layouts-fll-category-post-list .post-body-wrapper {
+    width: 50%; } }
 
 
 /*# sourceMappingURL=style-index.css.map*/
