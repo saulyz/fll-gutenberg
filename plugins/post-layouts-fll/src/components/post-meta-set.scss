@@ -1,10 +1,10 @@
 $size__icon: 40px;
 
-.fll-post-details {
+.post-details {
   display: flex;
   align-items: center;
 
-  .fll-author-thumbnail {
+  .author-thumbnail {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,14 +17,18 @@ $size__icon: 40px;
     border-radius: 50%;
   }
 
-  .fll-author-thumbnail + .fll-post-meta-wrapper {
+  .author-thumbnail + .post-meta-wrapper {
     margin-left: 10px;
   }
 
-  .fll-post-meta-wrapper {
+  .post-meta-wrapper {
+    margin: 0;
+    max-width: none;
+    width: auto;
   }
 
-  .fll-post-meta {
+  .post-meta {
+    margin: 0;
   }
 }
 

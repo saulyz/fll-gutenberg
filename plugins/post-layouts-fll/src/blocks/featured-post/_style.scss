@@ -1,3 +1,16 @@
 .wp-block-post-layouts-fll-featured-post {
   
+  .post-thumbnail-wrapper {
+    @include breakpoint-from(md) {
+      height: 400px;
+    }
+
+    .post-thumbnail {
+      @include breakpoint-from(md) {
+        width: 100%;
+        min-height: 100%;
+        height: auto;
+      }
+    }
+  }
 }

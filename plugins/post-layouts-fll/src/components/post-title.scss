@@ -1,0 +1,9 @@
+.entry-content {
+
+  h2, h3, h4, h5, h6 {
+    
+    &.post-title {
+      margin: $size__large 0;
+    }
+  }
+}

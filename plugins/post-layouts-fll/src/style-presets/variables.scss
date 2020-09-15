@@ -1,0 +1,20 @@
+$color__muted: #CACACA;
+
+
+// Breakpoints
+
+$breakpoints__set: (
+  xs: 360px,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+) !default;
+
+
+// Spacing
+
+$size__base: 1rem;
+$size__large: 2rem;
+$size__xlarge: 3rem;

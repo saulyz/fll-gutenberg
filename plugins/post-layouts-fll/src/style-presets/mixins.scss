@@ -1,0 +1,21 @@
+@mixin breakpoint-until($name, $breakpoints: $breakpoints__set) {
+  $max: map-get($map: $breakpoints, $key: $name);
+  @media (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin breakpoint-from($name, $breakpoints: $breakpoints__set) {
+  $min: map-get($map: $breakpoints, $key: $name);
+  @media (min-width: $min) {
+    @content;
+  }
+}
+
+@mixin breakpoint-between($name_from, $name_until, $breakpoints: $breakpoints__set) {
+  $min: map-get($map: $breakpoints, $key: $name_from);
+  $max: map-get($map: $breakpoints, $key: $name_until);
+  @media (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}

@@ -1,5 +1,11 @@
+// Setup
+@import './style-presets/all';
+
 // Components
-@import './components/post-meta-set.scss';
+@import './components/post-meta-set';
+@import './components/post-thumbnail-wrapper';
+@import './components/post-body-wrapper';
+@import './components/post-title';
 
 @import './blocks/featured-post/_style';
 @import './blocks/category-post-list/_style';

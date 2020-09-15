@@ -1,0 +1,29 @@
+.post-thumbnail-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  object-fit: cover;
+  overflow: hidden;
+
+  @include breakpoint-until(xs) {
+      height: 200px;
+  }
+  @include breakpoint-between(xs, sm) {
+      height: 250px;
+  }
+
+  .post-thumbnail {
+    @include breakpoint-until(md) {
+      max-width: 120%;
+      width: 120%;  // intentional
+      height: auto;
+    }
+    @include breakpoint-from(md) {
+      height: 100%;
+      min-height: 100%;
+      max-width: none;
+      width: auto;
+    }
+  }
+}
