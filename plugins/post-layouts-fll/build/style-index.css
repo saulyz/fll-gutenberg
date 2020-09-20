@@ -38,6 +38,12 @@
     .post-thumbnail-wrapper {
       height: 250px; } }
   @media (max-width: 768px) {
+    .post-thumbnail-wrapper {
+      width: 100%; } }
+  @media (min-width: 768px) {
+    .post-thumbnail-wrapper {
+      width: 50%; } }
+  @media (max-width: 768px) {
     .post-thumbnail-wrapper .post-thumbnail {
       max-width: 120%;
       width: 120%;
@@ -49,11 +55,35 @@
       max-width: none;
       width: auto; } }
 
+.post--featured .post-thumbnail-wrapper {
+  width: 100%; }
+
 .post-body-wrapper {
   padding: 3rem; }
+  @media (max-width: 768px) {
+    .post-body-wrapper {
+      width: 100%; } }
+  @media (min-width: 768px) {
+    .post-body-wrapper {
+      width: 50%; } }
+
+.post--featured .post-body-wrapper {
+  width: 100%; }
 
 .entry-content h2.post-title, .entry-content h3.post-title, .entry-content h4.post-title, .entry-content h5.post-title, .entry-content h6.post-title {
   margin: 2rem 0; }
+
+.post {
+  display: flex; }
+  @media (max-width: 768px) {
+    .post {
+      flex-wrap: wrap; } }
+
+.post + .post {
+  margin-top: 3rem; }
+
+.post--featured {
+  flex-wrap: wrap; }
 
 @media (min-width: 768px) {
   .wp-block-post-layouts-fll-featured-post .post-thumbnail-wrapper {
@@ -65,24 +95,10 @@
     min-height: 100%;
     height: auto; } }
 
-.wp-block-post-layouts-fll-category-post-list .post {
-  display: flex; }
-  @media (max-width: 768px) {
-    .wp-block-post-layouts-fll-category-post-list .post {
-      flex-wrap: wrap; } }
-
-.wp-block-post-layouts-fll-category-post-list .post + .post {
-  margin-top: 3rem; }
-
-@media (max-width: 768px) {
-  .wp-block-post-layouts-fll-category-post-list .post-thumbnail-wrapper,
-  .wp-block-post-layouts-fll-category-post-list .post-body-wrapper {
-    width: 100%; } }
-
-@media (min-width: 768px) {
-  .wp-block-post-layouts-fll-category-post-list .post-thumbnail-wrapper,
-  .wp-block-post-layouts-fll-category-post-list .post-body-wrapper {
-    width: 50%; } }
+.wp-block-post-layouts-fll-block-wrapper {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; }
 
 
 /*# sourceMappingURL=style-index.css.map*/
