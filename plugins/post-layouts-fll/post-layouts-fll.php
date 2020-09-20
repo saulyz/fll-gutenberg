@@ -80,7 +80,7 @@ function post_layouts_fll_register_blocks() {
 		'style' => 'post-layouts-fll-style',
 		'editor_style' => 'post-layouts-fll-style-editor',
     'editor_script' => 'post-layouts-fll-scripts',
-    'render_callback' => 'featured_post_render_callback',
+    'render_callback' => 'post_layouts_fll_featured_post_render_callback',
   ) );
 
   register_block_type( 'post-layouts-fll/category-post-list', array(
@@ -95,7 +95,7 @@ function post_layouts_fll_register_blocks() {
 		'style' => 'post-layouts-fll-style',
 		'editor_style' => 'post-layouts-fll-style-editor',
     'editor_script' => 'post-layouts-fll-scripts',
-    'render_callback' => 'category_post_list_render_callback',
+    'render_callback' => 'post_layouts_fll_category_post_list_render_callback',
   ) );
 
   register_block_type( 'post-layouts-fll/wrapper-block', array(
@@ -112,7 +112,7 @@ function post_layouts_fll_register_blocks() {
 
 // Dynamic callbacks
 
-function category_post_list_render_callback( $attributes ) {
+function post_layouts_fll_category_post_list_render_callback( $attributes ) {
   $limit = 10;
   
   $recent_posts = wp_get_recent_posts( array(
@@ -123,13 +123,15 @@ function category_post_list_render_callback( $attributes ) {
       return 'No posts';
   }
 
-  $block_title = get_plugin_component( 'block-title', ['title' => $attributes['content'] ] );
+  $block_title = post_layouts_fll_get_plugin_component( 'block-title', [
+    'title' => $attributes['content'] 
+  ] );
 
   $post_list_items = '';
 
   foreach ( $recent_posts as $post ) {
     $post_id = $post['ID'];
-    $post_list_items .= $post = get_post_render( $post_id );
+    $post_list_items .= $post = post_layouts_fll_get_post_render( $post_id );
   }
   $post_list = '<div class="post-list">' . $post_list_items . '</div>';
   
@@ -148,7 +150,7 @@ function category_post_list_render_callback( $attributes ) {
 }
 
 
-function featured_post_render_callback( $attributes ) {
+function post_layouts_fll_featured_post_render_callback( $attributes ) {
   //error_log('featured_post_render_callback:: ' . var_export(func_get_args(), true));
 
   $post_id = $attributes['postId'] ?? null;
@@ -173,8 +175,10 @@ function featured_post_render_callback( $attributes ) {
     $class .= ' ' . $attributes['className'];
   }
 
-  $block_title = get_plugin_component( 'block-title', ['title' => $attributes['content'] ] );
-  $post = get_post_render( $post_id );
+  $block_title = post_layouts_fll_get_plugin_component( 'block-title', [
+    'title' => $attributes['content'] 
+  ] );
+  $post = post_layouts_fll_get_post_render( $post_id );
 
   $block_content = sprintf( '<div class="%1$s">%2$s</div>', 
     esc_attr( $class ),
@@ -185,37 +189,39 @@ function featured_post_render_callback( $attributes ) {
 }
 
 
-function get_plugin_component( $name, $args ) {
+function post_layouts_fll_get_plugin_component( $name, $args ) {
   // $args is applied in component scope as component params array
   return require( COMPONENTS . "/$name.php" );
 }
 
 
-function get_post_render( $post_id ) {
+function post_layouts_fll_get_post_render( $post_id ) {
+  error_log( __METHOD__ . ' post_id ' . var_export( $post_id, true));
+
   $post_title = get_the_title( $post_id );
-  $post_link = get_plugin_component( 'link', 
+  $post_link = post_layouts_fll_get_plugin_component( 'link', 
     [
       'href' => get_permalink( $post_id ), 
       'content' => $post_title
     ]
   );
-  $post_title_with_link = get_plugin_component( 'post-title', ['title' => $post_link ] );
+  $post_title_with_link = post_layouts_fll_get_plugin_component( 'post-title', ['title' => $post_link ] );
 
-  $post_meta = get_plugin_component( 'post-meta-set', 
+  $post_meta = post_layouts_fll_get_plugin_component( 'post-meta-set', 
     [
       'post_id' => $post_id,
-      'reading_time' => get_post_reading_time( $post_id )
+      'reading_time' => post_layouts_fll_get_post_reading_time( $post_id )
     ]
   );
 
-  $group_body = get_plugin_component( 'post-body-wrapper', 
+  $group_body = post_layouts_fll_get_plugin_component( 'post-body-wrapper', 
     ['content' => $post_meta . $post_title_with_link  ]
   );
 
   $post_thumb_url = get_the_post_thumbnail_url( $post_id );
-  $post_thumbnail = get_plugin_component( 'post-thumbnail', ['src' => $post_thumb_url] );
+  $post_thumbnail = post_layouts_fll_get_plugin_component( 'post-thumbnail', ['src' => $post_thumb_url] );
 
-  $group_thumbnail = get_plugin_component( 'post-thumbnail-wrapper', 
+  $group_thumbnail = post_layouts_fll_get_plugin_component( 'post-thumbnail-wrapper', 
     ['content' => $post_thumbnail ]
   );
 
@@ -226,7 +232,7 @@ function get_post_render( $post_id ) {
 }
 
 
-function get_post_reading_time( $post_id ) {
+function post_layouts_fll_get_post_reading_time( $post_id ) {
   $content = get_post_field( 'post_content', $post_id );
   $word_count = str_word_count( strip_tags( $content ) );
   $reading_time = ceil( $word_count / 200 );
