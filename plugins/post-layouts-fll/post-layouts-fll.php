@@ -151,7 +151,6 @@ function post_layouts_fll_category_post_list_render_callback( $attributes ) {
 
 
 function post_layouts_fll_featured_post_render_callback( $attributes ) {
-  //error_log('featured_post_render_callback:: ' . var_export(func_get_args(), true));
 
   $post_id = $attributes['postId'] ?? null;
 
@@ -178,7 +177,7 @@ function post_layouts_fll_featured_post_render_callback( $attributes ) {
   $block_title = post_layouts_fll_get_plugin_component( 'block-title', [
     'title' => $attributes['content'] 
   ] );
-  $post = post_layouts_fll_get_post_render( $post_id );
+  $post = post_layouts_fll_get_post_render( $post_id, 'post--featured' );
 
   $block_content = sprintf( '<div class="%1$s">%2$s</div>', 
     esc_attr( $class ),
@@ -195,8 +194,7 @@ function post_layouts_fll_get_plugin_component( $name, $args ) {
 }
 
 
-function post_layouts_fll_get_post_render( $post_id ) {
-  error_log( __METHOD__ . ' post_id ' . var_export( $post_id, true));
+function post_layouts_fll_get_post_render( $post_id, $class = '' ) {
 
   $post_title = get_the_title( $post_id );
   $post_link = post_layouts_fll_get_plugin_component( 'link', 
@@ -225,7 +223,8 @@ function post_layouts_fll_get_post_render( $post_id ) {
     ['content' => $post_thumbnail ]
   );
 
-  return '<div class="post">' 
+  $post_class = ( ! empty( $class ) ) ? 'post ' . $class : 'post';
+  return '<div class="' . $post_class . '">' 
     . $group_thumbnail 
     . $group_body 
     . '</div>';

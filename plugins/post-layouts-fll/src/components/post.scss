@@ -1,0 +1,14 @@
+.post {
+  display: flex;
+  @include breakpoint-until(md) {
+    flex-wrap: wrap;
+  }
+}
+
+.post + .post {
+  margin-top: $size__xlarge;
+}
+
+.post--featured {
+  flex-wrap: wrap;
+}

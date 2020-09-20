@@ -1,3 +1,17 @@
 .post-body-wrapper {
   padding: $size__xlarge;
+
+  @include breakpoint-until(md) {
+    width: 100%;
+  }
+  @include breakpoint-from(md) {
+    width: 50%;
+  }
+}
+
+.post--featured {
+  
+  .post-body-wrapper {
+    width: 100%;
+  }
 }

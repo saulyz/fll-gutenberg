@@ -7,10 +7,16 @@
   overflow: hidden;
 
   @include breakpoint-until(xs) {
-      height: 200px;
+    height: 200px;
   }
   @include breakpoint-between(xs, sm) {
-      height: 250px;
+    height: 250px;
+  }
+  @include breakpoint-until(md) {
+    width: 100%;
+  }
+  @include breakpoint-from(md) {
+    width: 50%;
   }
 
   .post-thumbnail {
@@ -25,5 +31,12 @@
       max-width: none;
       width: auto;
     }
+  }
+}
+
+.post--featured {
+  
+  .post-thumbnail-wrapper {
+    width: 100%;
   }
 }

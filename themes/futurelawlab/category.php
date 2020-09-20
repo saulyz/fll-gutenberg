@@ -14,8 +14,6 @@ get_header();
 	$brand_mark_url = get_stylesheet_directory_uri() . '/assets/images/fll-logo-section-white.svg';
 	$artwork_url 	  = get_stylesheet_directory_uri() . '/assets/images/' . $category->slug . '-bg.svg';
 
-	// error_log('category - ' . var_export( $category, true));
-
 	if ( $category->name || $category->description ) {
 		?>
 
@@ -51,16 +49,16 @@ get_header();
 
 	if ( have_posts() ) {
 
-		$i = 0;
-
 		while ( have_posts() ) {
-			$i++;
-			if ( $i > 1 ) {
-				echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
-			}
 			the_post();
 
-			get_template_part( 'template-parts/content', get_post_type() );
+			if ( function_exists( 'post_layouts_fll_get_post_render' ) ) {
+				// if post-layouts-fll plugin is active, use its' post render 
+				get_template_part( 'template-parts/post-layouts-fll-post-list' );
+			} else {
+				// use standard theme post content template-part
+				get_template_part( 'template-parts/content', get_post_type() );
+			}
 
 		}
 	} elseif ( is_search() ) {
