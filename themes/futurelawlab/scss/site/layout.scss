@@ -8,3 +8,18 @@
     width: calc(100% - #{2 * $size__edge_whitespace_padding});
   }
 }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+
+  .col {
+    width: 100%;
+  }
+
+  .col-6-lg {
+    @include breakpoint-from(lg) {
+      width: 50%;
+    }
+  }
+}
