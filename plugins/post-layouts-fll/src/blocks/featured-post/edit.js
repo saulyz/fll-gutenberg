@@ -16,8 +16,6 @@ import './editor.scss';
 const FeaturedPost = (props) => {
   const { attributes, setAttributes, posts, className } = props;
 
-  console.log('FeaturedPost: props', props);
-
   if (!posts) {
     return <p className={className}>
       <Spinner />

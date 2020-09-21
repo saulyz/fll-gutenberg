@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { InspectorControls, InnerBlocks, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, Button, ResponsiveWrapper, Spinner } from '@wordpress/components';
+import { PanelBody, Button, ResponsiveWrapper, Spinner, SelectControl } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
 
 /**
@@ -16,7 +16,7 @@ const ALLOWED_MEDIA_TYPES = ['image'];
 
 const BlockWrapperEdit = (props) => {
   const { attributes, setAttributes, bgImage, className } = props;
-  const { bgImageId, bgImageUrl } = attributes;
+  const { bgImageId, bgImageUrl, alignmentClass } = attributes;
   const instructions = <p>{__('To edit the background image, you need permission to upload media.', 'post-layout-fll')}</p>;
 
   let styles = {};
@@ -37,6 +37,20 @@ const BlockWrapperEdit = (props) => {
       bgImageUrl: undefined,
     });
   };
+
+  const alignmentOptions = [
+    { label: 'Default', value: 'default' },
+    { label: 'Wide', value: 'alignwide' },
+    { label: 'Full', value: 'alignfull' },
+  ];
+
+  const onAlignmentSelect = (alignment) => {
+    console.log('onAlignmentSelect', alignment);
+    setAttributes({
+      alignmentClass: alignment,
+    });
+  };
+
 
   return (
     <Fragment>
@@ -94,9 +108,20 @@ const BlockWrapperEdit = (props) => {
             }
           </div>
         </PanelBody>
+        <PanelBody
+          title={__('Layout settings', 'post-layout-fll')}
+          initialOpen={false}
+        >
+          <SelectControl
+            label='Block layout alignment/size'
+            value={attributes.alignmentClass}
+            options={alignmentOptions}
+            onChange={onAlignmentSelect}
+          />
+        </PanelBody>
       </InspectorControls>
       <div
-        className={className}
+        className={`${className} ${alignmentClass}`}
         style={styles}
       >
         <InnerBlocks />

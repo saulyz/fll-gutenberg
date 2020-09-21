@@ -1,16 +1,17 @@
 import { InnerBlocks } from '@wordpress/block-editor';
-import { withSelect } from '@wordpress/data';
 
 const blockWrapperSave = (props) => {
   const { attributes } = props;
-  const { bgImageId, bgImageUrl } = attributes;
+  const { bgImageId, bgImageUrl, alignmentClass } = attributes;
+
+  console.log('blockWrapperSave', props);
 
   let styles;
   if (bgImageUrl) {
     styles = { backgroundImage: `url(${bgImageUrl})` };
   }
   return (
-    <div style={styles}>
+    <div className={alignmentClass} style={styles}>
       <InnerBlocks.Content />
     </div>
   );

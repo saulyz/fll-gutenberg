@@ -17,7 +17,10 @@ export default {
     },
     bgImageUrl: {
       type: 'string',
-    }
+    },
+    alignmentClass: {
+      type: 'string',
+    },
   },
   edit,
   save
