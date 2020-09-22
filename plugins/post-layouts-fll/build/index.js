@@ -629,8 +629,7 @@ var FeaturedPost = function FeaturedPost(props) {
 
   if (0 === posts.length) {
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('No Posts'));
-  } //console.log('FeaturedPost: posts', posts);
-
+  }
 
   var optionsList = Object(lodash__WEBPACK_IMPORTED_MODULE_1__["map"])(posts, function (post) {
     return {
