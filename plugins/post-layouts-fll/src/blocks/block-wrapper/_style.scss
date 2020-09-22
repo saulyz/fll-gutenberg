@@ -1,11 +1,54 @@
+%clear-top-bottom-margins {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
 .wp-block-post-layouts-fll-block-wrapper {
+  width: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  margin-left: auto;
+  margin-right: auto;
+
+  &.padding-none {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  &.padding-single {
+    padding-top: $size__block-padding;
+    padding-bottom: $size__block-padding;
+
+    @include breakpoint-from(lg) {
+      padding-top: $size__block-padding-lg;
+      padding-bottom: $size__block-padding-lg;
+    }
+  }
+
+  &.padding-double {
+    padding-top: $size__block-padding * 2;
+    padding-bottom: $size__block-padding * 2;
+
+    @include breakpoint-from(lg) {
+      padding-top: $size__block-padding-lg * 2;
+      padding-bottom: $size__block-padding-lg * 2;
+    }
+  }
+
+  &.alignnone, &.alignwide, &.alignfull {
+    @extend %clear-top-bottom-margins;
+  }
 
   &.has-fixed-container > * {
     max-width: 70rem;
     width: calc(100% - 4rem);
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // when block has Columns inside
+  .wp-block-columns {
+    @extend %clear-top-bottom-margins;
   }
 }

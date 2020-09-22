@@ -24,7 +24,10 @@ export default {
     hasFixedContainer: {
       type: 'boolean',
       default: true,
-    }
+    },
+    paddingClass: {
+      type: 'string',
+    },
   },
   edit,
   save

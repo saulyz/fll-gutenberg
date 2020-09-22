@@ -16,7 +16,7 @@ const ALLOWED_MEDIA_TYPES = ['image'];
 
 const BlockWrapperEdit = (props) => {
   const { attributes, setAttributes, bgImage, className } = props;
-  const { bgImageId, bgImageUrl, alignmentClass, hasFixedContainer } = attributes;
+  const { bgImageId, bgImageUrl, alignmentClass, hasFixedContainer, paddingClass } = attributes;
   const instructions = <p>{__('To edit the background image, you need permission to upload media.', 'post-layout-fll')}</p>;
 
   let styles = {};
@@ -38,14 +38,7 @@ const BlockWrapperEdit = (props) => {
     });
   };
 
-  const alignmentOptions = [
-    { label: 'Default', value: 'default' },
-    { label: 'Wide', value: 'alignwide' },
-    { label: 'Full', value: 'alignfull' },
-  ];
-
   const onAlignmentSelect = (alignment) => {
-    console.log('onAlignmentSelect', alignment);
     setAttributes({
       alignmentClass: alignment,
     });
@@ -56,6 +49,12 @@ const BlockWrapperEdit = (props) => {
       hasFixedContainer: val,
     });
   }
+
+  const onPaddingSelect = (padding) => {
+    setAttributes({
+      paddingClass: padding,
+    });
+  };
 
   return (
     <Fragment>
@@ -121,7 +120,11 @@ const BlockWrapperEdit = (props) => {
             <SelectControl
               label='Block layout alignment/size'
               value={attributes.alignmentClass}
-              options={alignmentOptions}
+              options={[
+                { label: 'None (default)', value: 'alignone' },
+                { label: 'Wide', value: 'alignwide' },
+                { label: 'Full', value: 'alignfull' },
+              ]}
               onChange={onAlignmentSelect}
               />
           </PanelRow>
@@ -132,10 +135,22 @@ const BlockWrapperEdit = (props) => {
               onChange={toggleContainer}
               />
           </PanelRow>
+          <PanelRow>
+            <SelectControl
+              label='Block padding'
+              value={attributes.paddingClass}
+              options={[
+                { label: 'Single', value: 'padding-single' },
+                { label: 'Double', value: 'padding-double' },
+                { label: 'None', value: 'padding-none' },
+              ]}
+              onChange={onPaddingSelect}
+            />
+          </PanelRow>
         </PanelBody>
       </InspectorControls>
       <div
-        className={`${className} ${alignmentClass}`}
+        className={`${className} ${alignmentClass} ${paddingClass}`}
         style={styles}
       >
         <InnerBlocks />
