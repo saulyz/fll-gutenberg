@@ -26,13 +26,11 @@ const FeaturedPost = (props) => {
     return <p>{__('No Posts')}</p>;
   }
 
-  //console.log('FeaturedPost: posts', posts);
-
   const optionsList = map(posts, (post) => {
     return { label: post.title.raw, value: post.id };
   });
   optionsList.unshift({ label: '- select a post -', value: 0 });
-
+ 
   return (
     <div className={className}>
       <RichText

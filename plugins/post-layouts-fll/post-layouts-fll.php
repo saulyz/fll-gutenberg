@@ -71,7 +71,7 @@ function post_layouts_fll_register_blocks() {
         'type' => 'string',
       ),
       'postId' => array(
-        'type' => 'number',
+        'type' => 'string',
       ),
       'className' => array(
         'type' => 'string',
@@ -153,20 +153,8 @@ function post_layouts_fll_category_post_list_render_callback( $attributes ) {
 function post_layouts_fll_featured_post_render_callback( $attributes ) {
 
   $post_id = $attributes['postId'] ?? null;
-
   if ( ! empty( $post_id ) ) {
-
-    $recent_posts = get_posts( array(
-      'numberposts' => 1,
-      'post_status' => 'publish',
-      'include' => $post_id,
-      ) );
-
-  } else {
-    $recent_posts = array();
-  }
-  if ( count( $recent_posts ) === 0 ) {
-    return 'No posts';
+    $post = get_post( $post_id );
   }
 
   $class = 'wp-block-post-layouts-fll-featured-post';
@@ -177,7 +165,11 @@ function post_layouts_fll_featured_post_render_callback( $attributes ) {
   $block_title = post_layouts_fll_get_plugin_component( 'block-title', [
     'title' => $attributes['content'] 
   ] );
-  $post = post_layouts_fll_get_post_render( $post_id, 'post--featured' );
+  if ( isset( $post ) ) {
+    $post = post_layouts_fll_get_post_render( $post_id, 'post--featured' );
+  } else {
+    $post = '-';
+  }
 
   $block_content = sprintf( '<div class="%1$s">%2$s</div>', 
     esc_attr( $class ),
