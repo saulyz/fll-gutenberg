@@ -21,6 +21,10 @@ export default {
     alignmentClass: {
       type: 'string',
     },
+    hasFixedContainer: {
+      type: 'boolean',
+      default: true,
+    }
   },
   edit,
   save

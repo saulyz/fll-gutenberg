@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { InspectorControls, InnerBlocks, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, Button, ResponsiveWrapper, Spinner, SelectControl } from '@wordpress/components';
+import { PanelBody, PanelRow, Button, ResponsiveWrapper, Spinner, SelectControl, ToggleControl } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
 
 /**
@@ -16,7 +16,7 @@ const ALLOWED_MEDIA_TYPES = ['image'];
 
 const BlockWrapperEdit = (props) => {
   const { attributes, setAttributes, bgImage, className } = props;
-  const { bgImageId, bgImageUrl, alignmentClass } = attributes;
+  const { bgImageId, bgImageUrl, alignmentClass, hasFixedContainer } = attributes;
   const instructions = <p>{__('To edit the background image, you need permission to upload media.', 'post-layout-fll')}</p>;
 
   let styles = {};
@@ -51,6 +51,11 @@ const BlockWrapperEdit = (props) => {
     });
   };
 
+  const toggleContainer = (val) => {
+    setAttributes({
+      hasFixedContainer: val,
+    });
+  }
 
   return (
     <Fragment>
@@ -112,12 +117,21 @@ const BlockWrapperEdit = (props) => {
           title={__('Layout settings', 'post-layout-fll')}
           initialOpen={false}
         >
-          <SelectControl
-            label='Block layout alignment/size'
-            value={attributes.alignmentClass}
-            options={alignmentOptions}
-            onChange={onAlignmentSelect}
-          />
+          <PanelRow>
+            <SelectControl
+              label='Block layout alignment/size'
+              value={attributes.alignmentClass}
+              options={alignmentOptions}
+              onChange={onAlignmentSelect}
+              />
+          </PanelRow>
+          <PanelRow>
+            <ToggleControl
+              label='Fixed container'
+              checked={hasFixedContainer}
+              onChange={toggleContainer}
+              />
+          </PanelRow>
         </PanelBody>
       </InspectorControls>
       <div
