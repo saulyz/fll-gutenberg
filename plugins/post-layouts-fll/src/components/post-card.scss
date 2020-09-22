@@ -1,14 +1,15 @@
-.post {
+.post-card {
   display: flex;
+  background: white;
   @include breakpoint-until(md) {
     flex-wrap: wrap;
   }
 }
 
-.post + .post {
+.post-card + .post-card {
   margin-top: $size__xlarge;
 }
 
-.post--featured {
+.post-card--featured {
   flex-wrap: wrap;
 }

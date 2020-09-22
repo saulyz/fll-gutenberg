@@ -166,7 +166,7 @@ function post_layouts_fll_featured_post_render_callback( $attributes ) {
     'title' => $attributes['content'] 
   ] );
   if ( isset( $post ) ) {
-    $post = post_layouts_fll_get_post_render( $post_id, 'post--featured' );
+    $post = post_layouts_fll_get_post_render( $post_id, 'post-card--featured' );
   } else {
     $post = '-';
   }
@@ -215,7 +215,7 @@ function post_layouts_fll_get_post_render( $post_id, $class = '' ) {
     ['content' => $post_thumbnail ]
   );
 
-  $post_class = ( ! empty( $class ) ) ? 'post ' . $class : 'post';
+  $post_class = ( ! empty( $class ) ) ? 'post-card ' . $class : 'post-card';
   return '<div class="' . $post_class . '">' 
     . $group_thumbnail 
     . $group_body 
