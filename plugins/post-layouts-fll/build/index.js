@@ -213,7 +213,10 @@ var BlockWrapperEdit = function BlockWrapperEdit(props) {
       bgImage = props.bgImage,
       className = props.className;
   var bgImageId = attributes.bgImageId,
-      bgImageUrl = attributes.bgImageUrl;
+      bgImageUrl = attributes.bgImageUrl,
+      alignmentClass = attributes.alignmentClass,
+      hasFixedContainer = attributes.hasFixedContainer,
+      paddingClass = attributes.paddingClass;
   var instructions = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('To edit the background image, you need permission to upload media.', 'post-layout-fll'));
   var styles = {};
 
@@ -234,6 +237,24 @@ var BlockWrapperEdit = function BlockWrapperEdit(props) {
     setAttributes({
       bgImageId: undefined,
       bgImageUrl: undefined
+    });
+  };
+
+  var onAlignmentSelect = function onAlignmentSelect(alignment) {
+    setAttributes({
+      alignmentClass: alignment
+    });
+  };
+
+  var toggleContainer = function toggleContainer(val) {
+    setAttributes({
+      hasFixedContainer: val
+    });
+  };
+
+  var onPaddingSelect = function onPaddingSelect(padding) {
+    setAttributes({
+      paddingClass: padding
     });
   };
 
@@ -279,8 +300,43 @@ var BlockWrapperEdit = function BlockWrapperEdit(props) {
     onClick: onRemoveImage,
     isLink: true,
     isDestructive: true
-  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Remove background image', 'post-layout-fll')))))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-    className: className,
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Remove background image', 'post-layout-fll'))))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelBody"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Layout settings', 'post-layout-fll'),
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    label: "Block layout alignment/size",
+    value: attributes.alignmentClass,
+    options: [{
+      label: 'None (default)',
+      value: 'alignone'
+    }, {
+      label: 'Wide',
+      value: 'alignwide'
+    }, {
+      label: 'Full',
+      value: 'alignfull'
+    }],
+    onChange: onAlignmentSelect
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["ToggleControl"], {
+    label: "Fixed container",
+    checked: hasFixedContainer,
+    onChange: toggleContainer
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    label: "Block padding",
+    value: attributes.paddingClass,
+    options: [{
+      label: 'Single',
+      value: 'padding-single'
+    }, {
+      label: 'Double',
+      value: 'padding-double'
+    }, {
+      label: 'None',
+      value: 'padding-none'
+    }],
+    onChange: onPaddingSelect
+  })))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "".concat(className, " ").concat(alignmentClass, " ").concat(paddingClass),
     style: styles
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["InnerBlocks"], null)));
 };
@@ -337,6 +393,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     bgImageUrl: {
       type: 'string'
+    },
+    alignmentClass: {
+      type: 'string'
+    },
+    hasFixedContainer: {
+      type: 'boolean',
+      default: true
+    },
+    paddingClass: {
+      type: 'string'
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -358,16 +424,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
-
 
 
 
 var blockWrapperSave = function blockWrapperSave(props) {
   var attributes = props.attributes;
   var bgImageId = attributes.bgImageId,
-      bgImageUrl = attributes.bgImageUrl;
+      bgImageUrl = attributes.bgImageUrl,
+      alignmentClass = attributes.alignmentClass,
+      hasFixedContainer = attributes.hasFixedContainer,
+      paddingClass = attributes.paddingClass;
   var styles;
 
   if (bgImageUrl) {
@@ -376,7 +442,10 @@ var blockWrapperSave = function blockWrapperSave(props) {
     };
   }
 
+  var containerClass = hasFixedContainer ? 'has-fixed-container' : null;
+  var blockClasses = [alignmentClass, containerClass, paddingClass].join(' ');
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: blockClasses,
     style: styles
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["InnerBlocks"].Content, null));
 };
