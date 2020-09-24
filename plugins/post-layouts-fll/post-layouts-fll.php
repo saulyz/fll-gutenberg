@@ -123,9 +123,13 @@ function post_layouts_fll_category_post_list_render_callback( $attributes ) {
       return 'No posts';
   }
 
-  $block_title = post_layouts_fll_get_plugin_component( 'block-title', [
-    'title' => $attributes['content'] 
-  ] );
+  if ( key_exists( 'content', $attributes ) ) {
+    $block_title = post_layouts_fll_get_plugin_component( 'block-title', [
+      'title' => $attributes['content'] 
+    ] );
+  } else {
+    $block_title = '';
+  }
 
   $post_list_items = '';
 
