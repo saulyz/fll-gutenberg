@@ -88,6 +88,12 @@ function post_layouts_fll_register_blocks() {
       'content' => array(
         'type' => 'string',
       ),
+      'categoryId' => array(
+        'type' => 'string',
+      ),
+      'totalPosts' => array(
+        'type' => 'string',
+      ),
       'className' => array(
         'type' => 'string',
       ),
@@ -113,10 +119,15 @@ function post_layouts_fll_register_blocks() {
 // Dynamic callbacks
 
 function post_layouts_fll_category_post_list_render_callback( $attributes ) {
+  if ( ! key_exists( 'categoryId', $attributes ) ) {
+    return '';
+  }
+  $category_id = intval( $attributes['categoryId'] );
   $limit = 10;
-  
+
   $recent_posts = wp_get_recent_posts( array(
     'numberposts' => $limit,
+    'category'    => $category_id,
     'post_status' => 'publish',
   ) );
   if ( count( $recent_posts ) === 0 ) {
